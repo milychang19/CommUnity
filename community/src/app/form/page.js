@@ -153,6 +153,7 @@ const CitySuggestionForm = () => {
   };
 
   const handleSubmit = async (e) => {
+    console.log(formData);  // Log form data to check its structure before submission
     e.preventDefault();
   
     try {
@@ -161,21 +162,24 @@ const CitySuggestionForm = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData), // Send formData here
+        body: JSON.stringify(formData), // Ensure you're sending formData here
       });
   
-      const result = await response.json();
-  
-      if (response.ok) {
-        alert('Your submission has been received!');
-        // Optionally, clear the form or redirect the user after success
+      if (!response.ok) {
+        console.error('Error response:', response);
+        const errorText = await response.text();
+        console.error('Error response text:', errorText);
       } else {
-        alert('Error: ' + result.error);
+        const result = await response.json();
+        console.log('Success:', result);
       }
     } catch (error) {
+      console.error(error);
       alert('An error occurred: ' + error.message);
     }
-  };  
+  };
+  
+  
 
   const sections = [
     {
